@@ -48,3 +48,53 @@
         loops.forEach(function (v) { vio.observe(v); });
     }
 })();
+
+(function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var links = document.querySelectorAll('[data-flood]');
+    if (!links.length) return;
+
+    links.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            if (reduceMotion) return;
+            e.preventDefault();
+            var href = link.getAttribute('href');
+            var color = link.dataset.flood;
+            var isDoor = link.classList.contains('door');
+            var title = link.querySelector('h2') ? link.querySelector('h2').textContent.trim() : link.textContent.trim();
+            var rect = link.getBoundingClientRect();
+
+            var flood = document.createElement('div');
+            flood.className = 'flood';
+            flood.dataset.tone = color === '#800000' ? 'red' : 'film';
+            flood.style.background = color;
+            flood.style.setProperty('--t', rect.top + 'px');
+            flood.style.setProperty('--l', rect.left + 'px');
+            flood.style.setProperty('--r', (window.innerWidth - rect.right) + 'px');
+            flood.style.setProperty('--b', (window.innerHeight - rect.bottom) + 'px');
+            var t = document.createElement('div');
+            t.className = 'flood-title';
+            t.textContent = title;
+            flood.appendChild(t);
+            document.body.appendChild(flood);
+
+            document.body.classList.add('is-leaving');
+            link.classList.add('is-chosen');
+
+            var pencilDelay = isDoor ? 380 : 0;
+            setTimeout(function () {
+                flood.getBoundingClientRect();
+                flood.classList.add('is-open');
+                setTimeout(function () { window.location.href = href; }, 620);
+            }, pencilDelay);
+        });
+    });
+
+    window.addEventListener('pageshow', function (e) {
+        if (!e.persisted) return;
+        document.querySelectorAll('.flood').forEach(function (f) { f.remove(); });
+        document.body.classList.remove('is-leaving');
+        document.querySelectorAll('.is-chosen').forEach(function (d) { d.classList.remove('is-chosen'); });
+    });
+})();
