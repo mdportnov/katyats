@@ -864,3 +864,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     .js .hero-copy > *, .js .hero-strip .frame, .js .red-sheet .ghost, .js .chooser-top > .container > * { animation: none; }
     ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* no single-word last lines */
+p, li, .hero-lead, .chooser-lead, .door-body p, .tally-label, .frame-title, .contact p, .prose p, dd, figcaption { text-wrap: pretty; }
