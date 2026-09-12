@@ -867,3 +867,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* no single-word last lines */
 p, li, .hero-lead, .chooser-lead, .door-body p, .tally-label, .frame-title, .contact p, .prose p, dd, figcaption { text-wrap: pretty; }
+.hero-strip .frame, .door-strip .frame { cursor: pointer; }
+.hero-strip .frame .frame-media, .door-strip .frame .frame-media { transition: transform 0.4s var(--ease-out); }
+.hero-strip .frame:hover .frame-media { transform: scale(1.03); }
